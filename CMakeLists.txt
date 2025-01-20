@@ -24,6 +24,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 
 catkin_package(
+  LIBRARIES ess_imu_driver_lib
   CATKIN_DEPENDS
   roscpp
   sensor_msgs
@@ -43,16 +44,16 @@ include_directories(
 )
 
 # Specify compiler options
-set(CMAKE_CXX_COMPILER "/usr/bin/g++")
+# set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 
-# Default to C99
-if (CMAKE_VERSION VERSION_LESS "3.1")
-    if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
-      set (CMAKE_C_FLAGS "-std=gnu99 ${CMAKE_C_FLAGS}")
-    endif ()
-else ()
-    set (CMAKE_C_STANDARD 99)
-endif ()
+# # Default to C99
+# if (CMAKE_VERSION VERSION_LESS "3.1")
+#     if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
+#       set (CMAKE_C_FLAGS "-std=gnu99 ${CMAKE_C_FLAGS}")
+#     endif ()
+# else ()
+     set (CMAKE_C_STANDARD 99)
+# endif ()
 
 #######################################################
 # The user only needs to select the PLATFORM and
@@ -118,7 +119,7 @@ endif()
 
 
 # Declare a library for Epson IMU functions from C sources
-add_library(ess_imu_driver_lib
+add_library(ess_imu_driver_lib SHARED
   ${lib_sources}
 )
 
@@ -158,6 +159,12 @@ target_link_libraries(ess_imu_driver_node
 #############
 
 ## Mark executables and/or libraries for installation
-install(TARGETS ess_imu_driver_node
-   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+install(TARGETS ess_imu_driver_node ess_imu_driver_lib
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+install(DIRECTORY
+  "launch"
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )

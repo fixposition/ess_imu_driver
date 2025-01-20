@@ -1,13 +1,13 @@
 <launch>
-
+  <arg name="launcher"       default=""                 doc="Launch node via this (node launch-prefix)"/>
   <node pkg="ess_imu_driver" type="ess_imu_driver_node" name="ess_imu_driver_node"
-	output="screen">
+	    output="screen"      respawn="false"            launch-prefix="$(arg launcher)">
 
     <!-- Frame ID for IMU topic. -->
     <param name="frame_id" type="string" value="imu_link" />
 
     <!-- The name of the serial port to read IMU data from. -->
-    <param name="serial_port" type="string" value="/dev/ttyUSB0" />
+    <param name="serial_port" type="string" value="/dev/ttymxc0" />
 
     <!-- ext_sel: These bits select the function of GPIO2 terminal to be GPIO2,
    External Counter Reset Input, or External Trigger Input.
@@ -92,8 +92,8 @@
     <param name="time_correction" type="int" value="0" />
 
     <!-- Remap topic to /imu/data_raw. -->
-    <remap from="epson_imu/data_raw" to="imu/data_raw"/>
-		<remap from="epson_imu/data" to="imu/data"/>
+    <!-- <remap from="epson_imu/data_raw" to="imu/data_raw"/>
+		<remap from="epson_imu/data" to="imu/data"/> -->
   </node>
 
 </launch>
